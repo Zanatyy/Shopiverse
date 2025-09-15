@@ -1,0 +1,86 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<SharedDataSet xmlns="http://schemas.microsoft.com/sqlserver/reporting/2010/01/shareddatasetdefinition" xmlns:rd="http://schemas.microsoft.com/SQLServer/reporting/reportdesigner">
+  <DataSet Name="DataSet2">
+    <Query>
+      <DataSourceReference>DS Final ProJect</DataSourceReference>
+      <CommandText>EVALUATE SUMMARIZECOLUMNS('Dim Address'[SK ADD ID], 'Dim Address'[Region], "Sales", [Sales])group by 'Dim Address'[Region]</CommandText>
+      <rd:DesignerState>
+        <QueryDefinition xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://schemas.microsoft.com/AnalysisServices/QueryDefinition">
+          <CommandType>DAX</CommandType>
+          <QuerySpecification xsi:type="MDXQuerySpecification">
+            <Select>
+              <Items>
+                <Item>
+                  <ID xsi:type="Level">
+                    <DimensionName>Dim Address</DimensionName>
+                    <HierarchyName>SK ADD ID</HierarchyName>
+                    <HierarchyUniqueName>[Dim Address].[SK ADD ID]</HierarchyUniqueName>
+                    <LevelName>SK ADD ID</LevelName>
+                    <UniqueName>[Dim Address].[SK ADD ID].[SK ADD ID]</UniqueName>
+                  </ID>
+                  <ItemCaption>SK ADD ID</ItemCaption>
+                  <UniqueName>true</UniqueName>
+                </Item>
+                <Item>
+                  <ID xsi:type="Level">
+                    <DimensionName>Dim Address</DimensionName>
+                    <HierarchyName>Region</HierarchyName>
+                    <HierarchyUniqueName>[Dim Address].[Region]</HierarchyUniqueName>
+                    <LevelName>Region</LevelName>
+                    <UniqueName>[Dim Address].[Region].[Region]</UniqueName>
+                  </ID>
+                  <ItemCaption>Region</ItemCaption>
+                  <UniqueName>true</UniqueName>
+                </Item>
+                <Item>
+                  <ID xsi:type="Measure">
+                    <MeasureName>Sales</MeasureName>
+                    <UniqueName>[Measures].[Sales]</UniqueName>
+                  </ID>
+                  <ItemCaption>Sales</ItemCaption>
+                  <BackColor>true</BackColor>
+                  <ForeColor>true</ForeColor>
+                  <FontFamily>true</FontFamily>
+                  <FontSize>true</FontSize>
+                  <FontWeight>true</FontWeight>
+                  <FontStyle>true</FontStyle>
+                  <FontDecoration>true</FontDecoration>
+                  <FormattedValue>true</FormattedValue>
+                  <FormatString>true</FormatString>
+                </Item>
+              </Items>
+            </Select>
+            <AutoExecute>false</AutoExecute>
+            <From>Cube Final Project</From>
+            <Filter>
+              <FilterItems />
+            </Filter>
+            <Calculations />
+            <Aggregates />
+            <QueryProperties>
+              <IncludeMemberValue>true</IncludeMemberValue>
+            </QueryProperties>
+          </QuerySpecification>
+          <Query>
+            <Statement>EVALUATE SUMMARIZECOLUMNS('Dim Address'[SK ADD ID], 'Dim Address'[Region], "Sales", [Sales])</Statement>
+            <ParameterDefinitions />
+          </Query>
+        </QueryDefinition>
+      </rd:DesignerState>
+    </Query>
+    <Fields>
+      <Field Name="SK_ADD_ID">
+        <DataField>Dim Address[SK ADD ID]</DataField>
+        <rd:TypeName>System.String</rd:TypeName>
+      </Field>
+      <Field Name="Region">
+        <DataField>Dim Address[Region]</DataField>
+        <rd:TypeName>System.String</rd:TypeName>
+      </Field>
+      <Field Name="Sales">
+        <DataField>[Sales]</DataField>
+        <rd:TypeName>System.Int32</rd:TypeName>
+      </Field>
+    </Fields>
+  </DataSet>
+</SharedDataSet>

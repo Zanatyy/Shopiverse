@@ -1,0 +1,38 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<SharedDataSet xmlns="http://schemas.microsoft.com/sqlserver/reporting/2010/01/shareddatasetdefinition" xmlns:rd="http://schemas.microsoft.com/SQLServer/reporting/reportdesigner">
+  <DataSet Name="DataSet1">
+    <Query>
+      <DataSourceReference>DS Final ProJect</DataSourceReference>
+      <CommandText>SELECT TOP 10
+    a.Region,
+    SUM(f.Sales) AS Total_sales
+FROM
+    Fact_Table f
+    JOIN Dim_Address a ON a.SK_ADD_ID = f.SK_ADD_ID
+GROUP BY
+    a.Region
+ORDER BY
+    Total_sales DESC</CommandText>
+      <rd:UseGenericDesigner>true</rd:UseGenericDesigner>
+    </Query>
+    <Fields>
+      <Field Name="Region">
+        <DataField>Region</DataField>
+        <rd:TypeName>System.String</rd:TypeName>
+      </Field>
+      <Field Name="Total_sales">
+        <DataField>Total_sales</DataField>
+        <rd:TypeName>System.Double</rd:TypeName>
+      </Field>
+    </Fields>
+    <Filters>
+      <Filter>
+        <FilterExpression>=Fields!Total_Sales.Value</FilterExpression>
+        <Operator>TopN</Operator>
+        <FilterValues>
+          <FilterValue DataType="Integer">10</FilterValue>
+        </FilterValues>
+      </Filter>
+    </Filters>
+  </DataSet>
+</SharedDataSet>

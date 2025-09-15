@@ -1,0 +1,83 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<SharedDataSet xmlns="http://schemas.microsoft.com/sqlserver/reporting/2010/01/shareddatasetdefinition" xmlns:rd="http://schemas.microsoft.com/SQLServer/reporting/reportdesigner">
+  <DataSet Name="DataSet3">
+    <Query>
+      <DataSourceReference>DS Final ProJect</DataSourceReference>
+      <CommandText>SELECT       TOP (100) f.Order_ID_BK, c.Cust_SK, a.Country, a.State, a.City, s.BK_Seller_ID, DATEFROMPARTS(d.year, d.month, d.day) AS Order_Date, DATEFROMPARTS(sh.year, sh.month, sh.day) AS Shipping_Date, f.Ship_Mode, f.Order_Prio, 
+                         f.Market, f.Discount, f.Profit, f.Shipping_Cost, f.Quantity, f.Sales
+FROM            Fact_Table AS f INNER JOIN
+                         Dim_Customer AS c ON f.Cust_SK = c.Cust_SK INNER JOIN
+                         Dim_Address AS a ON a.SK_ADD_ID = f.SK_ADD_ID INNER JOIN
+                         Dim_Seller AS s ON f.SK_Seller = s.SK_Seller INNER JOIN
+                         Dim_Date AS d ON f.Order_Date_ID_FK = d.SK_date INNER JOIN
+                         Dim_Date AS sh ON f.Ship_Date_ID_FK = sh.SK_date
+ORDER BY Order_Date DESC</CommandText>
+    </Query>
+    <Fields>
+      <Field Name="Order_ID_BK">
+        <DataField>Order_ID_BK</DataField>
+        <rd:TypeName>System.String</rd:TypeName>
+      </Field>
+      <Field Name="Cust_SK">
+        <DataField>Cust_SK</DataField>
+        <rd:TypeName>System.Int32</rd:TypeName>
+      </Field>
+      <Field Name="Country">
+        <DataField>Country</DataField>
+        <rd:TypeName>System.String</rd:TypeName>
+      </Field>
+      <Field Name="State">
+        <DataField>State</DataField>
+        <rd:TypeName>System.String</rd:TypeName>
+      </Field>
+      <Field Name="City">
+        <DataField>City</DataField>
+        <rd:TypeName>System.String</rd:TypeName>
+      </Field>
+      <Field Name="BK_Seller_ID">
+        <DataField>BK_Seller_ID</DataField>
+        <rd:TypeName>System.Int32</rd:TypeName>
+      </Field>
+      <Field Name="Order_Date">
+        <DataField>Order_Date</DataField>
+        <rd:TypeName>System.DateTime</rd:TypeName>
+      </Field>
+      <Field Name="Shipping_Date">
+        <DataField>Shipping_Date</DataField>
+        <rd:TypeName>System.DateTime</rd:TypeName>
+      </Field>
+      <Field Name="Ship_Mode">
+        <DataField>Ship_Mode</DataField>
+        <rd:TypeName>System.String</rd:TypeName>
+      </Field>
+      <Field Name="Order_Prio">
+        <DataField>Order_Prio</DataField>
+        <rd:TypeName>System.String</rd:TypeName>
+      </Field>
+      <Field Name="Market">
+        <DataField>Market</DataField>
+        <rd:TypeName>System.String</rd:TypeName>
+      </Field>
+      <Field Name="Discount">
+        <DataField>Discount</DataField>
+        <rd:TypeName>System.Double</rd:TypeName>
+      </Field>
+      <Field Name="Profit">
+        <DataField>Profit</DataField>
+        <rd:TypeName>System.Double</rd:TypeName>
+      </Field>
+      <Field Name="Shipping_Cost">
+        <DataField>Shipping_Cost</DataField>
+        <rd:TypeName>System.Double</rd:TypeName>
+      </Field>
+      <Field Name="Quantity">
+        <DataField>Quantity</DataField>
+        <rd:TypeName>System.Double</rd:TypeName>
+      </Field>
+      <Field Name="Sales">
+        <DataField>Sales</DataField>
+        <rd:TypeName>System.Double</rd:TypeName>
+      </Field>
+    </Fields>
+  </DataSet>
+</SharedDataSet>
