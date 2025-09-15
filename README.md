@@ -15,7 +15,16 @@ We deliver **strategic recommendations** that optimize marketing efforts and inc
 
 ---
 
-## 🔄 Data Journey
+## 🛠️ Tech Stack
+- **SQL Server** (Database, SSIS, SSAS, SSRS)  
+- **Python (pandas, numpy)**  
+- **Power BI**  
+- **Tableau**  
+
+---
+
+
+## 🔄 [Data Journey](https://github.com/Zanatyy/Shopiverse/tree/main/Data%20for%20documentation)
 
 ### 1. Data Acquisition
 - Collected raw datasets from multiple sources (CSV, Excel, etc.).  
@@ -27,19 +36,19 @@ We deliver **strategic recommendations** that optimize marketing efforts and inc
 - Handled missing values & duplicates.  
 - Consolidated all datasets into a single source of truth.  
 
-### 3. Loading into SQL Server with SSIS
+### 3. [Loading into SQL Server with SSIS](https://github.com/Zanatyy/Shopiverse/tree/main/SSIS)
 - Designed **ETL pipelines** using SQL Server Integration Services (SSIS).  
 - Mapped source → target tables.  
 - Implemented **error handling** and validation.  
 
-### 4. Database Design & Optimization
+### 4. [Database Design & Optimization](https://github.com/Zanatyy/Shopiverse/blob/main/v4.bak)
 - Built ERD with entities: Customer, Address, Order, Order_Details, Product, Seller, Category.  
 - Applied constraints, foreign keys, and relationships.  
 - Created views, stored procedures, functions, and triggers for auditing & error handling.  
 
 ---
 
-## 🗄️ Data Warehouse (DWH)
+## 🗄️ [Data Warehouse (DWH)](https://github.com/Zanatyy/Shopiverse/blob/main/GS_DWH.bak)
 - Designed a **Star Schema** with:
   - **Fact Table** → transactional data (sales, profit, quantity).  
   - **Dimension Tables** → descriptive data (Customer, Product, Seller, Date, Address).  
@@ -50,11 +59,11 @@ We deliver **strategic recommendations** that optimize marketing efforts and inc
 
 ## 📊 Reporting & Analysis
 
-### 1. SSRS (SQL Server Reporting Services)
+### 1. (SSRS (SQL Server Reporting Services))[https://github.com/Zanatyy/Shopiverse/tree/main/SSRS]
 - Built structured reports for **data validation & business reporting**.  
 - Checked aggregates and anomalies.  
 
-### 2. SSAS (SQL Server Analysis Services)
+### 2. (SSAS (SQL Server Analysis Services))[https://github.com/Zanatyy/Shopiverse/tree/main/Final%20Project%20Cube]
 - Created OLAP cubes & analytical models.  
 - Enabled **multi-dimensional slicing, KPIs, and trend analysis**.  
 
@@ -72,7 +81,6 @@ We deliver **strategic recommendations** that optimize marketing efforts and inc
 
 ---
 
-## ✅ Conclusion
 The Shopiverse project represents a **full end-to-end BI pipeline**:  
 
 - **Data integration** → Raw → Cleaned → DWH  
@@ -84,10 +92,3 @@ This workflow transforms raw data into **reliable, actionable insights** that em
 
 ---
 
-## 🛠️ Tech Stack
-- **SQL Server** (Database, SSIS, SSAS, SSRS)  
-- **Python (pandas, numpy)**  
-- **Power BI**  
-- **Tableau**  
-
----
