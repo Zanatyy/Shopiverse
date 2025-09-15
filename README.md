@@ -59,11 +59,11 @@ We deliver **strategic recommendations** that optimize marketing efforts and inc
 
 ## 📊 Reporting & Analysis
 
-### 1. (SSRS (SQL Server Reporting Services))[https://github.com/Zanatyy/Shopiverse/tree/main/SSRS]
+### 1. (SSRS - Reporting Service) [https://github.com/Zanatyy/Shopiverse/tree/main/SSRS]
 - Built structured reports for **data validation & business reporting**.  
 - Checked aggregates and anomalies.  
 
-### 2. (SSAS (SQL Server Analysis Services))[https://github.com/Zanatyy/Shopiverse/tree/main/Final%20Project%20Cube]
+### 2. (SSAS - Analytical Cube) [https://github.com/Zanatyy/Shopiverse/tree/main/Final%20Project%20Cube]
 - Created OLAP cubes & analytical models.  
 - Enabled **multi-dimensional slicing, KPIs, and trend analysis**.  
 
