@@ -1,0 +1,346 @@
+/* ============================================================
+   AUDIT TRIGGERS CREATION SCRIPT
+   This script creates AFTER INSERT/UPDATE/DELETE triggers
+   for all Dimension and Fact tables to log changes in audit tables.
+   ============================================================ */
+
+--------------------------------------------------------------
+-- 1. Dim_Address → Audit_Dim_Address
+--------------------------------------------------------------
+CREATE TRIGGER trg_Dim_Address_Audit
+ON Dim_Address
+AFTER INSERT, UPDATE, DELETE
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    -- INSERT
+    INSERT INTO Audit_Dim_Address (
+        Audit_Action, User_Name,
+        SK_Add_id, BK_Add_ID, Region, Country, State, City, Postal_code
+    )
+    SELECT
+        'INSERT', SYSTEM_USER,
+        SK_Add_id, BK_Add_ID, Region, Country, State, City, Postal_code
+    FROM inserted
+    WHERE NOT EXISTS (SELECT 1 FROM deleted WHERE deleted.SK_Add_id = inserted.SK_Add_id);
+
+    -- UPDATE
+    INSERT INTO Audit_Dim_Address (
+        Audit_Action, User_Name,
+        SK_Add_id, BK_Add_ID, Region, Country, State, City, Postal_code
+    )
+    SELECT
+        'UPDATE', SYSTEM_USER,
+        i.SK_Add_id, i.BK_Add_ID, i.Region, i.Country, i.State, i.City, i.Postal_code
+    FROM inserted i
+    JOIN deleted d ON i.SK_Add_id = d.SK_Add_id;
+
+    -- DELETE
+    INSERT INTO Audit_Dim_Address (
+        Audit_Action, User_Name,
+        SK_Add_id, BK_Add_ID, Region, Country, State, City, Postal_code
+    )
+    SELECT
+        'DELETE', SYSTEM_USER,
+        SK_Add_id, BK_Add_ID, Region, Country, State, City, Postal_code
+    FROM deleted
+    WHERE NOT EXISTS (SELECT 1 FROM inserted WHERE inserted.SK_Add_id = deleted.SK_Add_id);
+END;
+GO
+
+--------------------------------------------------------------
+-- 2. Dim_Customer → Dim_Customer_Audit
+--------------------------------------------------------------
+CREATE TRIGGER trg_Dim_Customer_Audit
+ON Dim_Customer
+AFTER INSERT, UPDATE, DELETE
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    -- INSERT
+    INSERT INTO Dim_Customer_Audit (
+        Cust_SK, Cust_ID_BK, Full_name, Kids, YOB, Segment, Sales,
+        Operation_Type, Changed_By
+    )
+    SELECT
+        Cust_SK, Cust_ID_BK, Full_name, Kids, YOB, Segment, Sales,
+        'INSERT', SYSTEM_USER
+    FROM inserted
+    WHERE NOT EXISTS (SELECT 1 FROM deleted WHERE deleted.Cust_SK = inserted.Cust_SK);
+
+    -- UPDATE
+    INSERT INTO Dim_Customer_Audit (
+        Cust_SK, Cust_ID_BK, Full_name, Kids, YOB, Segment, Sales,
+        Operation_Type, Changed_By,
+        Old_Full_name, Old_Kids, Old_YOB, Old_Segment, Old_Sales
+    )
+    SELECT
+        i.Cust_SK, i.Cust_ID_BK, i.Full_name, i.Kids, i.YOB, i.Segment, i.Sales,
+        'UPDATE', SYSTEM_USER,
+        d.Full_name, d.Kids, d.YOB, d.Segment, d.Sales
+    FROM inserted i
+    JOIN deleted d ON i.Cust_SK = d.Cust_SK;
+
+    -- DELETE
+    INSERT INTO Dim_Customer_Audit (
+        Cust_SK, Cust_ID_BK, Full_name, Kids, YOB, Segment, Sales,
+        Operation_Type, Changed_By
+    )
+    SELECT
+        Cust_SK, Cust_ID_BK, Full_name, Kids, YOB, Segment, Sales,
+        'DELETE', SYSTEM_USER
+    FROM deleted
+    WHERE NOT EXISTS (SELECT 1 FROM inserted WHERE inserted.Cust_SK = deleted.Cust_SK);
+END;
+GO
+
+--------------------------------------------------------------
+-- 3. Dim_Date → Dim_Date_Audit
+--------------------------------------------------------------
+CREATE TRIGGER trg_Dim_Date_Audit
+ON Dim_Date
+AFTER INSERT, UPDATE, DELETE
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    -- INSERT
+    INSERT INTO Dim_Date_Audit (
+        Sk_date, Day, Month, Year,
+        Operation_Type, Changed_By
+    )
+    SELECT
+        Sk_date, Day, Month, Year,
+        'INSERT', SYSTEM_USER
+    FROM inserted
+    WHERE NOT EXISTS (SELECT 1 FROM deleted WHERE deleted.Sk_date = inserted.Sk_date);
+
+    -- UPDATE
+    INSERT INTO Dim_Date_Audit (
+        Sk_date, Day, Month, Year,
+        Operation_Type, Changed_By,
+        Old_Day, Old_Month, Old_Year
+    )
+    SELECT
+        i.Sk_date, i.Day, i.Month, i.Year,
+        'UPDATE', SYSTEM_USER,
+        d.Day, d.Month, d.Year
+    FROM inserted i
+    JOIN deleted d ON i.Sk_date = d.Sk_date;
+
+    -- DELETE
+    INSERT INTO Dim_Date_Audit (
+        Sk_date, Day, Month, Year,
+        Operation_Type, Changed_By
+    )
+    SELECT
+        Sk_date, Day, Month, Year,
+        'DELETE', SYSTEM_USER
+    FROM deleted
+    WHERE NOT EXISTS (SELECT 1 FROM inserted WHERE inserted.Sk_date = deleted.Sk_date);
+END;
+GO
+
+--------------------------------------------------------------
+-- 4. Dim_Product → Dim_Product_Audit
+--------------------------------------------------------------
+CREATE TRIGGER trg_Dim_Product_Audit
+ON Dim_Product
+AFTER INSERT, UPDATE, DELETE
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    -- INSERT
+    INSERT INTO Dim_Product_Audit (
+        Sk_prod_id, Bk_prod_id, Subcategory_name, Category, Product_name,
+        Operation_Type, Changed_By
+    )
+    SELECT
+        Sk_prod_id, Bk_prod_id, Subcategory_name, Category, Product_name,
+        'INSERT', SYSTEM_USER
+    FROM inserted
+    WHERE NOT EXISTS (SELECT 1 FROM deleted WHERE deleted.Sk_prod_id = inserted.Sk_prod_id);
+
+    -- UPDATE
+    INSERT INTO Dim_Product_Audit (
+        Sk_prod_id, Bk_prod_id, Subcategory_name, Category, Product_name,
+        Operation_Type, Changed_By,
+        Old_Subcategory_name, Old_Category, Old_Product_name
+    )
+    SELECT
+        i.Sk_prod_id, i.Bk_prod_id, i.Subcategory_name, i.Category, i.Product_name,
+        'UPDATE', SYSTEM_USER,
+        d.Subcategory_name, d.Category, d.Product_name
+    FROM inserted i
+    JOIN deleted d ON i.Sk_prod_id = d.Sk_prod_id;
+
+    -- DELETE
+    INSERT INTO Dim_Product_Audit (
+        Sk_prod_id, Bk_prod_id, Subcategory_name, Category, Product_name,
+        Operation_Type, Changed_By
+    )
+    SELECT
+        Sk_prod_id, Bk_prod_id, Subcategory_name, Category, Product_name,
+        'DELETE', SYSTEM_USER
+    FROM deleted
+    WHERE NOT EXISTS (SELECT 1 FROM inserted WHERE inserted.Sk_prod_id = deleted.Sk_prod_id);
+END;
+GO
+
+--------------------------------------------------------------
+-- 5. Dim_Seller → Dim_Seller_Audit
+--------------------------------------------------------------
+CREATE TRIGGER trg_Dim_Seller_Audit
+ON Dim_Seller
+AFTER INSERT, UPDATE, DELETE
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    -- INSERT
+    INSERT INTO Dim_Seller_Audit (
+        Sk_seller, Bk_seller_id, FirstName, LastName, Dateofjoin, Total_sales,
+        Operation_Type, Changed_By
+    )
+    SELECT
+        Sk_seller, Bk_seller_id, FirstName, LastName, Dateofjoin, Total_sales,
+        'INSERT', SYSTEM_USER
+    FROM inserted
+    WHERE NOT EXISTS (SELECT 1 FROM deleted WHERE deleted.Sk_seller = inserted.Sk_seller);
+
+    -- UPDATE
+    INSERT INTO Dim_Seller_Audit (
+        Sk_seller, Bk_seller_id, FirstName, LastName, Dateofjoin, Total_sales,
+        Operation_Type, Changed_By,
+        Old_FirstName, Old_LastName, Old_Dateofjoin, Old_Total_sales
+    )
+    SELECT
+        i.Sk_seller, i.Bk_seller_id, i.FirstName, i.LastName, i.Dateofjoin, i.Total_sales,
+        'UPDATE', SYSTEM_USER,
+        d.FirstName, d.LastName, d.Dateofjoin, d.Total_sales
+    FROM inserted i
+    JOIN deleted d ON i.Sk_seller = d.Sk_seller;
+
+    -- DELETE
+    INSERT INTO Dim_Seller_Audit (
+        Sk_seller, Bk_seller_id, FirstName, LastName, Dateofjoin, Total_sales,
+        Operation_Type, Changed_By
+    )
+    SELECT
+        Sk_seller, Bk_seller_id, FirstName, LastName, Dateofjoin, Total_sales,
+        'DELETE', SYSTEM_USER
+    FROM deleted
+    WHERE NOT EXISTS (SELECT 1 FROM inserted WHERE inserted.Sk_seller = deleted.Sk_seller);
+END;
+GO
+
+--------------------------------------------------------------
+-- 6. Dim_Datee → Dim_Datee_Audit
+--------------------------------------------------------------
+CREATE TRIGGER trg_Dim_Datee_Audit
+ON Dim_Datee
+AFTER INSERT, UPDATE, DELETE
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    -- INSERT
+    INSERT INTO Dim_Datee_Audit (
+        Sk_date, Day, Month, Year,
+        Operation_Type, Changed_By
+    )
+    SELECT
+        Sk_date, Day, Month, Year,
+        'INSERT', SYSTEM_USER
+    FROM inserted
+    WHERE NOT EXISTS (SELECT 1 FROM deleted WHERE deleted.Sk_date = inserted.Sk_date);
+
+    -- UPDATE
+    INSERT INTO Dim_Datee_Audit (
+        Sk_date, Day, Month, Year,
+        Operation_Type, Changed_By,
+        Old_Day, Old_Month, Old_Year
+    )
+    SELECT
+        i.Sk_date, i.Day, i.Month, i.Year,
+        'UPDATE', SYSTEM_USER,
+        d.Day, d.Month, d.Year
+    FROM inserted i
+    JOIN deleted d ON i.Sk_date = d.Sk_date;
+
+    -- DELETE
+    INSERT INTO Dim_Datee_Audit (
+        Sk_date, Day, Month, Year,
+        Operation_Type, Changed_By
+    )
+    SELECT
+        Sk_date, Day, Month, Year,
+        'DELETE', SYSTEM_USER
+    FROM deleted
+    WHERE NOT EXISTS (SELECT 1 FROM inserted WHERE inserted.Sk_date = deleted.Sk_date);
+END;
+GO
+
+--------------------------------------------------------------
+-- 7. Fact_Table → Fact_Table_Audit
+--------------------------------------------------------------
+CREATE TRIGGER trg_Fact_Table_Audit
+ON Fact_Table
+AFTER INSERT, UPDATE, DELETE
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    -- INSERT
+    INSERT INTO Fact_Table_Audit (
+        Fact_sk, Order_detail_Bk, Order_iD_BK, Cust_SK, Sk_Add_id, Sk_prod_id, Sk_seller,
+        Order_detail_id_fk, Ship_date_id_fk, Ship_mode, Order_prio, Market, Discount, Profit,
+        Shipping_cost, Quantity, Sales,
+        Operation_Type, Changed_By
+    )
+    SELECT
+        Fact_sk, Order_detail_Bk, Order_iD_BK, Cust_SK, Sk_Add_id, Sk_prod_id, Sk_seller,
+        Order_detail_id_fk, Ship_date_id_fk, Ship_mode, Order_prio, Market, Discount, Profit,
+        Shipping_cost, Quantity, Sales,
+        'INSERT', SYSTEM_USER
+    FROM inserted
+    WHERE NOT EXISTS (SELECT 1 FROM deleted WHERE deleted.Fact_sk = inserted.Fact_sk);
+
+    -- UPDATE
+    INSERT INTO Fact_Table_Audit (
+        Fact_sk, Order_detail_Bk, Order_iD_BK, Cust_SK, Sk_Add_id, Sk_prod_id, Sk_seller,
+        Order_detail_id_fk, Ship_date_id_fk, Ship_mode, Order_prio, Market, Discount, Profit,
+        Shipping_cost, Quantity, Sales,
+        Operation_Type, Changed_By,
+        Old_Ship_mode, Old_Order_prio, Old_Market, Old_Discount, Old_Profit,
+        Old_Shipping_cost, Old_Quantity, Old_Sales
+    )
+    SELECT
+        i.Fact_sk, i.Order_detail_Bk, i.Order_iD_BK, i.Cust_SK, i.Sk_Add_id, i.Sk_prod_id, i.Sk_seller,
+        i.Order_detail_id_fk, i.Ship_date_id_fk, i.Ship_mode, i.Order_prio, i.Market, i.Discount, i.Profit,
+        i.Shipping_cost, i.Quantity, i.Sales,
+        'UPDATE', SYSTEM_USER,
+        d.Ship_mode, d.Order_prio, d.Market, d.Discount, d.Profit,
+        d.Shipping_cost, d.Quantity, d.Sales
+    FROM inserted i
+    JOIN deleted d ON i.Fact_sk = d.Fact_sk;
+
+    -- DELETE
+    INSERT INTO Fact_Table_Audit (
+        Fact_sk, Order_detail_Bk, Order_iD_BK, Cust_SK, Sk_Add_id, Sk_prod_id, Sk_seller,
+        Order_detail_id_fk, Ship_date_id_fk, Ship_mode, Order_prio, Market, Discount, Profit,
+        Shipping_cost, Quantity, Sales,
+        Operation_Type, Changed_By
+    )
+    SELECT
+        Fact_sk, Order_detail_Bk, Order_iD_BK, Cust_SK, Sk_Add_id, Sk_prod_id, Sk_seller,
+        Order_detail_id_fk, Ship_date_id_fk, Ship_mode, Order_prio, Market, Discount, Profit,
+        Shipping_cost, Quantity, Sales,
+        'DELETE', SYSTEM_USER
+    FROM deleted
+    WHERE NOT EXISTS (SELECT 1 FROM inserted WHERE inserted.Fact_sk = deleted.Fact_sk);
+END;
+GO
