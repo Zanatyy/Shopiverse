@@ -86,7 +86,14 @@ The Shopiverse project represents a **full end-to-end BI pipeline**:
 - **Data integration** → Raw → Cleaned → DWH  
 - **Data governance** → Audit + Error handling  
 - **Analytics** → SSRS & SSAS  
-- **Visualization** → Power BI & Tableau  
+- **Visualization** → Power BI & Tableau
+
+Visualization screenshots (Power BI):
+<img width="1402" height="788" alt="Screenshot 2025-09-14 183555" src="https://github.com/user-attachments/assets/3115aaa6-1987-4b2e-b5e8-44869711de5b" />
+<img width="1401" height="784" alt="Screenshot 2025-09-14 183702" src="https://github.com/user-attachments/assets/21811766-dc1a-4489-96fe-8f3460c8eb14" />
+<img width="1407" height="787" alt="Screenshot 2025-09-14 183726" src="https://github.com/user-attachments/assets/f8514e5d-223f-4db1-a9ea-252b0a7e6ba0" />
+<img width="1400" height="785" alt="Screenshot 2025-09-14 183754" src="https://github.com/user-attachments/assets/b135d51c-183d-4b7f-bcf0-4157d6de4cc7" />
+
 
 This workflow transforms raw data into **reliable, actionable insights** that empower decision-makers in the retail & e-commerce industry.  
 
